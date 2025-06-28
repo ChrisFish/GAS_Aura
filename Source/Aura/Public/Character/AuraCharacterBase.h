@@ -39,4 +39,7 @@ protected:
 	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY()
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
+
+private:
+	virtual void InitAbilityActorInfo();
 };
