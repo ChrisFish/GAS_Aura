@@ -40,6 +40,11 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesEffectClass;
+
+	void InitializePrimaryAttributes() const;
+	
 private:
 	virtual void InitAbilityActorInfo();
 };
