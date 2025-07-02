@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
@@ -12,7 +13,12 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	
+	//we need to set up the map for each attribute here one time.
+	//more boilerplate, but if you add new attributes, you only need to work in this file.
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Strength, &UAuraAttributeSet::GetStrengthAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Intelligence, &UAuraAttributeSet::GetIntelligenceAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Resilience, &UAuraAttributeSet::GetResilienceAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Vigor, &UAuraAttributeSet::GetVigorAttribute);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

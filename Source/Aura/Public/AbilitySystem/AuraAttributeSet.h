@@ -48,6 +48,11 @@ struct FEffectProperties
 	
 	
 };
+
+//creating a template for a complex function pointer definition. Like a generic.
+template<class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 UCLASS()
 class AURA_API UAuraAttributeSet : public UAttributeSet
 {
@@ -59,6 +64,13 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
+	//create a mapping of Gameplay Tag to Attribute Get Function
+	//This uses c++ function pointer syntax to allow the map to contain a pointer to the function that retrieves the attribute value.
+	//you can also make a typedef for the function pointer type.
+	//TMap<FGameplayTag, FGameplayAttribute(*)()> TagsToAttributes;
+	//change to a generic using the template defined above.
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
+	
 	/*
 	* Primary Attributes
 	*/
