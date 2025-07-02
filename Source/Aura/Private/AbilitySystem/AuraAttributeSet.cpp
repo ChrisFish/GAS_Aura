@@ -15,10 +15,22 @@ UAuraAttributeSet::UAuraAttributeSet()
 {
 	//we need to set up the map for each attribute here one time.
 	//more boilerplate, but if you add new attributes, you only need to work in this file.
+	/* Primary Attributes */
 	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Strength, &UAuraAttributeSet::GetStrengthAttribute);
 	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Intelligence, &UAuraAttributeSet::GetIntelligenceAttribute);
 	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Resilience, &UAuraAttributeSet::GetResilienceAttribute);
 	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Primary_Vigor, &UAuraAttributeSet::GetVigorAttribute);
+	/* Secondary Attributes */
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_Armor, &UAuraAttributeSet::GetArmorAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_ArmorPenetration, &UAuraAttributeSet::GetArmorPenetrationAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_BlockChance, &UAuraAttributeSet::GetBlockChanceAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_CriticalHitChance, &UAuraAttributeSet::GetCriticalHitChanceAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_CriticalHitDamage, &UAuraAttributeSet::GetCriticalHitDamageAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_CriticalHitResistance, &UAuraAttributeSet::GetCriticalHitResistanceAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_HealthRegeneration, &UAuraAttributeSet::GetHealthRegenerationAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_ManaRegeneration, &UAuraAttributeSet::GetManaRegenerationAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_MaxHealth, &UAuraAttributeSet::GetMaxHealthAttribute);
+	TagsToAttributes.Add(FAuraGameplayTags::Get().Attributes_Secondary_MaxMana, &UAuraAttributeSet::GetMaxManaAttribute);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
