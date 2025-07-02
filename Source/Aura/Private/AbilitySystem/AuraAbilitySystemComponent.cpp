@@ -3,12 +3,17 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
+#include "AuraGameplayTags.h"
+
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
 	//character and/or enemy have set their ability actor info and notify here.
 	//set delegates
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
-	
+
+	//test native tags
+	//const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange,FString::Printf(TEXT("Tag: %s"), *GameplayTags.Attributes_Secondary_Armor.ToString()));
 }
 
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
