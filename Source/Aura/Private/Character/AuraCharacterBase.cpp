@@ -44,6 +44,14 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultVitalAttributesEffectClass, 1.0f);
 }
 
+void AAuraCharacterBase::AddCharacterAbilities()
+{
+	//only activate on server (for mp)
+	if (!HasAuthority()) return;
+	UAuraAbilitySystemComponent* ASC = CastChecked<UAuraAbilitySystemComponent>(GetAbilitySystemComponent());
+	ASC->AddCharacterAbilities(StartupAbilities);
+}
+
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
 }

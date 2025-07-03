@@ -52,7 +52,12 @@ protected:
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level) const;
 	void InitializeDefaultAttributes() const;
+
+	void AddCharacterAbilities();
 	
 private:
 	virtual void InitAbilityActorInfo();
+
+	UPROPERTY(EditAnywhere, Category="GAS|Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
