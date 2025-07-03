@@ -3,8 +3,8 @@
 
 #include "Player/AuraPlayerController.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
 #include "Interaction/EnemyInterface.h"
+#include "Input/AuraInputComponent.h"
 class IEnemyInterface;
 
 AAuraPlayerController::AAuraPlayerController()
@@ -35,9 +35,10 @@ void AAuraPlayerController::BeginPlay()
 void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AAuraPlayerController::Move(const struct FInputActionValue& InputActionValue)
@@ -87,6 +88,19 @@ void AAuraPlayerController::CursorTrace()
 			return;
 		}
 	}
+}
+
+void AAuraPlayerController::AbilityInputTagPressed(const FGameplayTag InputTag)
+{
+	
+}
+
+void AAuraPlayerController::AbilityInputTagReleased(const FGameplayTag InputTag)
+{
+}
+
+void AAuraPlayerController::AbilityInputTagHeld(const FGameplayTag InputTag)
+{
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaSeconds)
