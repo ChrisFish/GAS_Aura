@@ -35,6 +35,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
+	//where is the socket location for casting projectiles
+	UPROPERTY(EditAnywhere, Category="Combat")
+	FName WeaponTipSocketName;
+	virtual FVector GetCombatSocketLocation() override;
 
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;

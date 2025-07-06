@@ -20,7 +20,10 @@ class AURA_API ICombatInterface
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+	// Add interface functions to this class.
 public:
+	//get the level of the current actor
 	virtual int32 GetPlayerLevel();
+	//get the socket location for combat spawns (such as projectiles)
+	virtual FVector GetCombatSocketLocation();
 };
