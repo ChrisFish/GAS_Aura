@@ -33,11 +33,16 @@ private:
 	TObjectPtr<UInputMappingContext> AuraContext;
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
-
 	void Move(const struct FInputActionValue& InputActionValue);
 	void CursorTrace();
 	FHitResult CursorHit;
-	
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
+	bool bShiftKeyDown = false;
+	void ShiftPressed() {bShiftKeyDown = true;}
+	void ShiftReleased() {bShiftKeyDown = false;}
+
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
 

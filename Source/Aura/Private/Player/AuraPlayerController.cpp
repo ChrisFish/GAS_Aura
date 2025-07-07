@@ -47,6 +47,8 @@ void AAuraPlayerController::SetupInputComponent()
 
 	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
 	AuraInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &ThisClass::ShiftPressed);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &ThisClass::ShiftReleased);
 }
 
 void AAuraPlayerController::Move(const struct FInputActionValue& InputActionValue)
@@ -96,6 +98,7 @@ void AAuraPlayerController::CursorTrace()
 		}
 	}
 }
+
 //// Ability Input Tag Handlers
 /// Pass the tags to the ability system component to handle the input
 void AAuraPlayerController::AbilityInputTagPressed(const FGameplayTag InputTag)
@@ -116,12 +119,9 @@ void AAuraPlayerController::AbilityInputTagReleased(const FGameplayTag InputTag)
 		GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 		return;
 	}
-	if (bTargeting)
-	{
-		if (GetAuraAbilitySystemComponent() == nullptr) return;
-		GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
-	}
-	else
+
+	GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+	if (!bTargeting && !bShiftKeyDown)
 	{
 		const APawn* ControlledPawn = GetPawn<APawn>();
 		if (FollowTime <= ShortPressThreshold && ControlledPawn)
@@ -150,7 +150,6 @@ void AAuraPlayerController::AbilityInputTagReleased(const FGameplayTag InputTag)
 		FollowTime = 0.f;
 		bTargeting = false;
 	}
-	
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(const FGameplayTag InputTag)
@@ -162,7 +161,7 @@ void AAuraPlayerController::AbilityInputTagHeld(const FGameplayTag InputTag)
 		GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 		return;
 	}
-	if (bTargeting)
+	if (bTargeting || bShiftKeyDown)
 	{//LMB is targeting something
 		if (GetAuraAbilitySystemComponent() == nullptr) return;
 		GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);

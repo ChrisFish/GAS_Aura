@@ -135,6 +135,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	//clamping health and mana between 0 and max values
 	if(Data.EvaluatedData.Attribute == GetHealthAttribute()){
 		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
+		UE_LOG(LogTemp, Warning, TEXT("Changed health on %s, Health %f"), *Props.TargetAvatarActor->GetName(), GetHealth());
 	}
 	if(Data.EvaluatedData.Attribute == GetManaAttribute()){
 		SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));

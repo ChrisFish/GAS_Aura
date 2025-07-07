@@ -48,6 +48,7 @@ int32 AAuraCharacter::GetPlayerLevel()
 	return 1; // Default level if player state is not available
 }
 
+
 void AAuraCharacter::InitAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();

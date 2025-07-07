@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/Abilities/AuraProjectileSpell.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
 
@@ -22,7 +24,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	
 }
 
-void UAuraProjectileSpell::SpawnProjectile() const
+void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
@@ -36,6 +38,9 @@ void UAuraProjectileSpell::SpawnProjectile() const
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
 		//TODO: Set Rotation
+		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+		Rotation.Pitch = 0.f; //projectiles should not pitch
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 		
 		//spawn projectile class deferred to set more properties before actual commit
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
@@ -45,8 +50,14 @@ void UAuraProjectileSpell::SpawnProjectile() const
 			Cast<APawn>(GetOwningActorFromActorInfo()),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-		//TODO: Give projectile a gameplay effect spec to apply damage
-		
+		//Give projectile a gameplay effect spec to apply damage
+		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		const FGameplayEffectSpecHandle SpecHandle =  SourceASC->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(), SourceASC->MakeEffectContext());
+		if (SpecHandle.IsValid())
+		{
+			Projectile->DamageEffectSpecHandle = SpecHandle;
+		}
+		//finish spawning the projectile
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }
