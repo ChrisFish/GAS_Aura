@@ -29,6 +29,12 @@ public:
 	virtual void HighlightActor() PURE_VIRTUAL(AAuraCharacterBase::HighlightActor, );
 	UFUNCTION(BlueprintCallable, Category="Aura|Character")
 	virtual void UnhighlightActor() PURE_VIRTUAL(AAuraCharacterBase::UnhighlightActor, );
+
+	virtual UAnimMontage* GetHitReactionMontage_Implementation() const override;
+	virtual void Die() override;
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -55,13 +61,16 @@ protected:
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributesEffectClass;
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level) const;
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 
 	void AddCharacterAbilities();
 	
 private:
 	virtual void InitAbilityActorInfo();
 
+	UPROPERTY(EditAnywhere, Category="Combat")
+	TObjectPtr<UAnimMontage> HitReactionMontage;
+	
 	UPROPERTY(EditAnywhere, Category="GAS|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };

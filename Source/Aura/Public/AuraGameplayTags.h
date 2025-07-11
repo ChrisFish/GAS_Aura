@@ -46,6 +46,24 @@ public:
 	FGameplayTag InputTag_2;
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
+
+	/* Damage Types */
+	FGameplayTag DamageTag;
+	FGameplayTag DamageTag_Fire;
+	FGameplayTag DamageTag_Lightning;
+	FGameplayTag DamageTag_Arcane;
+	FGameplayTag DamageTag_Physical;
+
+	/* Resistances */
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
+	
+	//array of valid damage types so that calculations can loop through looking for damage types magnitude by caller tags.
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	/* Effect Tags */
+	FGameplayTag Effects_HitReact;
 	
 private:
 	static FAuraGameplayTags Instance;

@@ -8,9 +8,10 @@
 
 UMMC_MaxHealth::UMMC_MaxHealth()
 {
+	//definition of the attribute capture(s) we want to use for this calculation
 	VigorDef.AttributeToCapture = UAuraAttributeSet::GetVigorAttribute();
 	VigorDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
-	VigorDef.bSnapshot = false;
+	VigorDef.bSnapshot = false; // Snapshot at time of calculation or time of effect application. This is false because vigor does not change often.
 
 	RelevantAttributesToCapture.Add(VigorDef);
 }
