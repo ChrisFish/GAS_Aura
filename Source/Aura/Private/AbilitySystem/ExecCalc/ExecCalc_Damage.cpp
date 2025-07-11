@@ -20,8 +20,11 @@ struct AuraDamageStatics
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Armor);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(BlockChance);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ArmorPenetration);
-	//add critical hit chance, crit hit damage, and crit hit resistance
-	
+	//TODO: add critical hit chance, crit hit damage, and crit hit resistance
+	//TODO: add resistances
+
+	//this maps a gameplay tag to a capture definition for the attribute so we can look up a def by tag
+	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDefs;
 	AuraDamageStatics()
 	{
 		//macro that writes methods to set the defined variables with values passed in
@@ -30,6 +33,10 @@ struct AuraDamageStatics
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, Armor, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, BlockChance, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, ArmorPenetration, Source, false);
+
+		//TODO: add the mappings for all the attributes
+		const FAuraGameplayTags& Tags = FAuraGameplayTags::Get();
+		TagsToCaptureDefs.Add(Tags.Attributes_Secondary_Armor, ArmorDef);
 	}
 	
 };
@@ -89,9 +96,17 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	float DamageValue = 0.0f;
 	for (auto& Pair : FAuraGameplayTags::Get().DamageTypesToResistances)
 	{
+		const FGameplayTag& DamageTypeTag = Pair.Key;
+		const FGameplayTag& ResistanceTag = Pair.Value;
+		const FGameplayEffectAttributeCaptureDefinition ResistanceDef = GetAuraDamageStatics().TagsToCaptureDefs.FindChecked(ResistanceTag);
 		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key, false, 0.0f);
-		//calculate resistances and add to total damage.
-		DamageValue += DamageTypeValue; //add the damage value of each damage type to the total damage value
+		//get value of the resistance
+		float ResistanceValue = 0.0f;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(ResistanceDef, EvaluateParams, ResistanceValue);
+		//do we allow values outside 0 - 100?
+		//calculate resistances and add to total damage
+		//they need to be captured in the attribute set, so we can use the EvaluateParams to get the value.
+		DamageValue += ((100.f-ResistanceValue)/100.f) * DamageTypeValue; //add the damage value of each damage type to the total damage value
 	}
 	
 
