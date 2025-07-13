@@ -27,7 +27,9 @@ public:
 	//get the level of the current actor
 	virtual int32 GetPlayerLevel();
 	//get the socket location for combat spawns (such as projectiles)
-	virtual FVector GetCombatSocketLocation();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FVector GetCombatSocketLocation();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& TargetLocation);

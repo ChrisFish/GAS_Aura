@@ -59,6 +59,9 @@ public:
 	FGameplayTag Attributes_Resistance_Lightning;
 	FGameplayTag Attributes_Resistance_Arcane;
 	FGameplayTag Attributes_Resistance_Physical;
+
+	/* Abilities */
+	FGameplayTag Abilities_Attack;
 	
 	//array of valid damage types so that calculations can loop through looking for damage types magnitude by caller tags.
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;

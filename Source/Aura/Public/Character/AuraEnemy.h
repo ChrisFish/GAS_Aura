@@ -22,12 +22,16 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
+	/* Enemy Interface */
 	virtual void HighlightActor() override;
 	virtual void UnhightlightActor() override;
-
+	virtual void SetCombatTarget_Implementation(AActor* Target) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
+	/* End Enemy Interface */
 	/* Combat Interface */
 	virtual int32 GetPlayerLevel() override;
 	virtual void Die() override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
 	/* End Combat Interface */
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
@@ -36,7 +40,9 @@ public:
 	bool bHitReacting = false;
 	UPROPERTY(BlueprintReadOnly, Category="Movement")
 	float BaseMoveSpeed = 250.f;
-	
+
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	TObjectPtr<AActor> CombatTarget;
 	
 protected:
 	virtual void BeginPlay() override;
