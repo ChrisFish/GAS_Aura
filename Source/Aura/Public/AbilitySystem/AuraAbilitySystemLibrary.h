@@ -49,5 +49,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|GameplayEffects")
 	static void SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsCriticalHit);
-	
+
+	UFUNCTION(BLueprintcallable, Category="AuraAbilitySystemLibrary|GameplayMechanics")
+	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, const TArray<AActor*>& IgnoreActors, const FVector& SphereOrigin, float Radius, TArray<AActor*>& OutPlayers);
+
+	//determine if two actors are in the same team
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayMechanics")
+	static bool IsNotFriend(AActor* FirstActor , AActor* SecondActor);
 };

@@ -30,8 +30,28 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Aura|Character")
 	virtual void UnhighlightActor() PURE_VIRTUAL(AAuraCharacterBase::UnhighlightActor, );
 
+	
+	/* Combat Interface */
 	virtual UAnimMontage* GetHitReactionMontage_Implementation() const override;
 	virtual void Die() override;
+	UPROPERTY(EditAnywhere, Category="Combat")
+	FName WeaponTipSocketName;
+	UPROPERTY(EditAnywhere, Category="Combat")
+	FName LeftHandTipSocketName;
+	UPROPERTY(EditAnywhere, Category="Combat")
+	FName RightHandTipSocketName;
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
+
+	bool bIsDead = false;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+
+	//Here are the montages that can be used for attacks by this actor.
+	UPROPERTY(EditAnywhere, Category="Combat")
+	TArray<FTaggedMontage> AttackMontages;
+	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	/* End Combat Interface */
+
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
 	
@@ -39,13 +59,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category="Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 	//where is the socket location for casting projectiles
-	UPROPERTY(EditAnywhere, Category="Combat")
-	FName WeaponTipSocketName;
-	virtual FVector GetCombatSocketLocation_Implementation() override;
-
+	
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY()

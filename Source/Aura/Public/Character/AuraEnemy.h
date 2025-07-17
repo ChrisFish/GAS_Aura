@@ -31,14 +31,14 @@ public:
 	/* Combat Interface */
 	virtual int32 GetPlayerLevel() override;
 	virtual void Die() override;
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	
 	/* End Combat Interface */
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	bool bHitReacting = false;
-	UPROPERTY(BlueprintReadOnly, Category="Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Movement")
 	float BaseMoveSpeed = 250.f;
 
 	UPROPERTY(BlueprintReadWrite, Category="Combat")

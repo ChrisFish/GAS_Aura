@@ -9,8 +9,10 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/Aura.h"
 #include "Components/AudioComponent.h"
+#include "Interfaces/IPluginManager.h"
 #include "Sound/SoundBase.h"
 
 AAuraProjectile::AAuraProjectile()
@@ -62,6 +64,9 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 {
 	//make sure the overlap is not the effect causer
 	if (OtherActor == GetInstigator() || OtherActor == this) return;
+	if (!DamageEffectSpecHandle.IsValid()){return;}
+	if (!UAuraAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor))
+	{ return; } //if the target is a friend, do not apply damage
 	
 	if (!bHit) //client hasn't registered hit yet
 	{
